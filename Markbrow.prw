@@ -98,7 +98,8 @@ Return()
 
 Static Function Mark()
 
-
+// Importante: criar rotina no menu
+//Rotinas MVC não funcionam se a chamada não for pelo menu
 
 	Local aArea			:= GetArea()
 

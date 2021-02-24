@@ -5,7 +5,7 @@
 //+------------+------------+--------+--------------------------------------------+
 //| Funï¿½ï¿½o:    | xFormula   | Autor: | David Alves dos Santos                     | 
 //+------------+------------+--------+--------------------------------------------+
-//| Descriï¿½ï¿½o: | Rotina para execuï¿½ï¿½o de funï¿½ï¿½es dentro do Protheus.              |
+//| Descriï¿½ï¿½o: | Rotina para execução de funções dentro do Protheus.              |
 //+------------+------------------------------------------------------------------+
 //|------------------------> SigaMDI.net - Cursos Online <------------------------|
 //+-------------------------------------------------------------------------------+
@@ -20,7 +20,7 @@ User Function xFormula()
 	Local oBtn1Frm := Nil
 	Local oBtn2Frm := Nil
 	
-	//-> Recupera e/ou define um bloco de cï¿½digo para ser avaliado quando ocorrer um erro em tempo de execuï¿½ï¿½o.
+	//-> Recupera e/ou define um bloco de cï¿½digo para ser avaliado quando ocorrer um erro em tempo de execução.
 	bError := ErrorBlock( {|e| cError := e:Description } ) //, Break(e) } )
 	
 	//-> Inicia sequencia.
