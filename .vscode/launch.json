@@ -32,7 +32,17 @@
 			"args": [],
 			"label": "sigagfe",
 			"description": ""
+		},
+		{
+			"args": [],
+			"label": "SIGACFG",
+			"description": ""
+		},
+		{
+			"args": [],
+			"label": "SIGAESP",
+			"description": ""
 		}
 	],
-	"lastProgramExecuted": "sigagfe"
+	"lastProgramExecuted": "SIGAESP"
 }

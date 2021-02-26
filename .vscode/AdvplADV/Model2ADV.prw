@@ -4,9 +4,9 @@
 User Function Model2()
 
     LOCAL cAlias := "SX5"
-    PRIVATE cCadastro := "Cadastro de Tabela Tempor�ria"
+    PRIVATE cCadastro := "Cadastro de Tabela Temporária"
     PRIVATE aRotina     := { }
-//Tela de modelo 2: manualmente cria tela
+
 //AADD(aRotina, { “Pesquisar”, “AxPesqui”, 0, 1 })
     AADD(aRotina, { "Visualizar"   , "U_tela"   , 0, 2 })
     AADD(aRotina, { "Incluir"      , "U_tela"   , 0, 3 })
@@ -25,7 +25,7 @@ RETURN
 User Function tela(cAlias,nRecno,nOpc)
 
     Local nOpcx:= Iif(INCLUI,3,2)
-    Local lOpen  := .F.
+    Local cFilter := ""      // FILTRO PARA A TABELA SX3
 
     Private cCLiente        := ""
     Private cLoja           := ""
@@ -34,21 +34,17 @@ User Function tela(cAlias,nRecno,nOpc)
 //+-----------------------------------------------+
 //¦ Montando aHeader para a Getdados              ¦
 //+-----------------------------------------------+
+  
+    // ABERTURA DO DICIONÁRIO SX3
+    OpenSXs(,,,, SM0->M0_CODIGO, cTable, "SX3",, .F.)
+	
+	cFilter := cTable + "->X3_ARQUIVO == 'SX5' "
 
- /*   dbSelectArea("Sx3") // Não utilizar abertura direto na SX3 */
+    (cTable)->(DbSetFilter({|| &(cFilter)}, cFilter))
+    (cTable)->(DbGoTop())
 
     nUsado:=0
     aHeader:={}
-    
-    //Função para abrir Dicionario de Dados 
-    lOpen := U_OpenDic("SX5", "99")
-
-    If lOpen
-        (cTable)->(dbSeek("SX5"))
-    else
-        Alert("Não foi Possivel Abrir tabela SX3. Processo ser� encerrado.")
-        Return()
-    EndIf
 
     While (cTable)->(!Eof()) .And. ((cTable)->(x3_arquivo) == "SX5")
 
@@ -74,22 +70,23 @@ User Function tela(cAlias,nRecno,nOpc)
 //+-----------------------------------------------+
 
     aCols:=Array(1,nUsado+1)
-    dbSelectArea("Sx3")
+   // dbSelectArea("Sx3")
 
-    dbSeek("SX5")
+    //dbSeek("SX5")
     nUsado:=0
+    (cTable)->(DbGoTop())
 
-    While !Eof() .And. (x3_arquivo == "SX5")
-        IF X3USO(x3_usado) .AND. cNivel >= x3_nivel
+    While (cTable)->(!Eof()) .And. (x3_arquivo == "SX5")
+        IF X3USO((cTable)->(x3_usado)) .AND. cNivel >= (cTable)->&(x3_nivel)
             nUsado:=nUsado+1
             IF nOpcx == 3
-                IF x3_tipo == "C"
-                    aCOLS[1][nUsado] := SPACE(x3_tamanho)
-                Elseif x3_tipo == "N"
+                IF (cTable)->(x3_tipo) == "C"
+                    aCOLS[1][nUsado] := SPACE((cTable)->(x3_tamanho))
+                Elseif (cTable)->(x3_tipo) == "N"
                     aCOLS[1][nUsado] := 0
-                Elseif x3_tipo == "D"
+                Elseif (cTable)->(x3_tipo) == "D"
                     aCOLS[1][nUsado] := dDataBase
-                Elseif x3_tipo == "M"
+                Elseif (cTable)->(x3_tipo) == "M"
                     aCOLS[1][nUsado] := ""
                 Else
                     aCOLS[1][nUsado] := .F.
@@ -244,6 +241,3 @@ Static Function Grava()
     Next x
 
 Return
-
-
-
